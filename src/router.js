@@ -16,7 +16,7 @@ Router.prototype.push = function push(location) {
 const globalRoutes = []
 const menuRouters = [
     {
-        path: '/', name: '', redirect: {name: 'home'}, component: (resolve) => require(['./views/main.vue'], resolve),
+        path: '/', name: '', redirect: {name: 'jvm'}, component: (resolve) => require(['./views/main.vue'], resolve),
         meta: {
             title: '首页'
         },

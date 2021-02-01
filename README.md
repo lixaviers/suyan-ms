@@ -1,4 +1,4 @@
-# mall-web
+# suyan-ms
 
 ## Project setup
 ```
