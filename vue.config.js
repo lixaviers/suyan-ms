@@ -25,7 +25,6 @@ module.exports = {
     //反向代理
     devServer: {
       port: 8081,
-      proxy: {}
     },
     pluginOptions: {
       // 第三方插件配置
