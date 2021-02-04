@@ -94,6 +94,13 @@
 </ul>
 <p>也就是它并未真正进入Topic的queue，而是用了临时queue来放所谓的half message，等提交事务后才会真正的将half message转移到topic下的queue。</p>
 <h3>九、RocketMQ是如何保证数据的高容错性的？</h3>
+<ul>
+<li>在不开启容错的情况下，轮询队列进行发送，如果失败了，重试的时候过滤失败的Broker。</li>
+<li>如果开启了容错策略，会通过RocketMQ的预测机制来预测一个Broker是否可用。</li>
+<li>如果上次失败的Broker可用那么还是选择该Broker队列。</li>
+<li>如果上述情况失败，则随机选择一个进行发送。</li>
+<li>在发送消息的时候会记录一下调用的时间与是否报错，根据该时间去预测Broker的可用时间。</li>
+</ul>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
