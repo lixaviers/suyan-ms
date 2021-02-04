@@ -1,7 +1,7 @@
 <template>
     <div class="suyan__home">
         <h1>JVM<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
-        <p><strong>一、内存区域</strong></p>
+        <p><span style="font-size: 14pt;"><strong>一、内存区域</strong></span></p>
 <p>1、JVM规范《The Java Virtual Machine Specificati1on, Java SE 8 Edition》2.5 Run-Time Data Areas中描述的运行时数据区分为6个区域</p>
 <ul>
 <li>程序计数器（The pc Register）：当前线程所执行的字节码的行号指示器，用于记录正在执行的虚拟机字节指令地址，线程私有。</li>
@@ -16,7 +16,7 @@
 <li>本地内存（或者说非堆）包含元数据区和直接内存，其中元数据区又包含方法区和运行时常量池</li>
 <li>堆区，它是JVM上最大的内存区域</li>
 </ul>
-<p><strong>二、JVM内存为什么要分成新生代、老年代、持久代，新生代中为什么要分为Eden和Survivor？</strong></p>
+<p><span style="font-size: 14pt;"><strong>二、JVM内存为什么要分成新生代、老年代、持久代，新生代中为什么要分为Eden和Survivor？</strong></span></p>
 <p>1、新生代:</p>
 <p>新生代主要用来存放新生的对象。一般占据堆空间的1/3。在新生代中，保存着大量的刚刚创建的对象，但是大部分的对象都是朝生夕死，所以在新生代中会频繁的进行MinorGC，进行垃圾回收。新生代又细分为三个区：Eden区、SurvivorFrom、SurvivorTo区，三个区的默认比例为8：1：1。</p>
 <ul>
@@ -40,10 +40,10 @@
 <li>如果只有一个Survivor区，那当Eden区满了之后，就会复制对象到Survivor区，容易产生内存碎片化，严重影响性能。</li>
 <li>使用2个Survivor区，始终保持有一个空的Survivor区，可以避免内存碎片化。</li>
 </ul>
-<p><strong>三、JVM中一次完整的GC流程是怎样的，对象如何晋升老年代？</strong></p>
+<p><span style="font-size: 14pt;"><strong>三、JVM中一次完整的GC流程是怎样的，对象如何晋升老年代？</strong></span></p>
 <p>对象优先在新生代区中分配，若没有足够空间，Minor GC；&nbsp;</p>
 <p>大对象（需要大量连续内存空间）直接进入老年态；长期存活的对象进入老年态。如果对象在新生代出生并经过第一次MGC后仍然存活，年龄+1，若年龄超过一定限制（15），则被晋升到老年态。</p>
-<p><strong>四、你知道的垃圾收集器，各自的优缺点</strong></p>
+<p><span style="font-size: 14pt;"><strong>四、你知道的垃圾收集器，各自的优缺点</strong></span></p>
 <div><span style="background-color: #ced4d9;">1、Serial收集器：</span></div>
 <div>最基本、历史最悠久的垃圾收集器。<br />它的单线程的意义不仅仅意味着它只会使用一条垃圾收集器线程去完成垃圾收集工作，更重要的是它在进行垃圾收集器工作的时候必须暂停其他所以的工作线程(Stop The World)，直到它收集结束<br />特点：</div>
 <ol>
@@ -142,7 +142,7 @@
 </div>
 <p>应用场景：</p>
 <p>1.面向服务端应用，针对具有大内存、多处理器的机器<br />2.最主要的应用是为需要低GC延迟，并具有大堆的应用程序提供解决方案<br />具体什么情况用G1比CMS好：(不是绝对)<br />&nbsp;1.超过50%的Java堆被活动数据占用<br />&nbsp;2.对象分配评率或年代的提示频率变化很大<br />&nbsp;3.GC停顿时间过长(长于0.5至1秒)<br />建议：<br />1.如果现在采用的收集器没有出现问题，不用急着去选择G1<br />2.如果应用程序追求低停顿，可以尝试选择G1<br />3.是否替代CMS只有需要实际场景测试才知道</p>
-<div><strong>五、垃圾收集算法</strong></div>
+<div><span style="font-size: 14pt;"><strong>五、垃圾收集算法</strong></span></div>
 <div>1、引用计数算法：给对象中添加一个引用计数器，每当有一个地方引用它时，计数器值就加1；当引用失效时，计数器值就减1；任何时刻计数器为0的对象就是不可能再被使用的。这种方式一方面无法区分软、虚、弱、强引用类别。并一方面，会造成死锁。假设两个对象相互引用始终无法释放counter，永远不能GC。</div>
 <div>2、可达性分析算法(根搜索算法)：通过一系列为GC Roots的对象作为起始点，从这些节点向下搜索，搜索所走过的路径被称为引用链。当一个对象到GC Roots没有任何引用链相连时，则证明该对象是不可用。可作为GC Roots的对象包括：虚拟机栈(栈帧中的本地变量表)中引用的对象、方法区中类静态属性引用的对象、方法区中常量引用的对象、本地方法栈中JNI(即一般说的Native方法)引用的对象。</div>
 <div>3、标记清除算法：是一种非常基础和常见的垃圾收集算法，该算法被J.McCarthy等人在1960年提出并应用于Lisp语言。</div>
@@ -171,7 +171,7 @@
 </ul>
 <p>标记的存活对象将会被整理，按照内存地址依次排列，而未被标记的内存会被清理掉。当我们需要给新对象分配内存时，JVM只需要持有一个内存的起始地址即可，这比维护一个空闲列表少了许多开销。</p>
 <div>7、分代收集算法：在Java虚拟机分代垃圾回收机制中，应用程序可用的堆空间可以分为年轻代和老年代，年轻代分为Eden区和From区与To区。当系统创建一个对象的时候，总是在Eden区域操作，当这个区满了，就会触发一次YoungGC，也就是年轻代的垃圾回收。一般来说这时候不是所有的对象都没用了，所以就会把还能用的对象复制到From区。这样整个Eden区就被整理干净了，可以继续创建新的对象。当Eden区再次被用完，就再触发一次YoungGC。这次触发YoungGC后，会将Eden区与From区还在被使用的对象复制到To区，再下一次YoungGC的时候，则是将Eden区与To区中还在使用的对方复制到From区。经过若干次YoungGC后，有些对象在From与To之间来回游荡，这时候From区与To区亮出了底线(阙值)，这些还没挂掉的对象会被复制到老年代。老年代空间被用完，就会执行FullGC，也就是全量回收。</div>
-<p><strong>六、类加载的过程</strong></p>
+<p><span style="font-size: 14pt;"><strong>六、类加载的过程</strong></span></p>
 <ol>
 <li>加载(Loading)：读取类文件产生二进制流，并转为特定数据结构，初步校验cafe babe魔法书、常量池、文件长度、是否有父类等，然后创建对应类的java.lang.Class对象。</li>
 <li>验证(Verification)：文件格式验证、元数据验证、字节码验证、符号引用验证。</li>
@@ -181,7 +181,7 @@
 <li>使用(Using)</li>
 <li>卸载(Unloading)</li>
 </ol>
-<p><strong>七、说说你了解的类加载器</strong></p>
+<p><span style="font-size: 14pt;"><strong>七、说说你了解的类加载器</strong></span></p>
 <p>类加载器就是根据指定全限名称将class文件加载到JVM内存，转成Class对象。</p>
 <ul>
 <li>启动类加载器(Bootstrap ClassLoader)：由C++语言实现(针对HotSpot)，负责将存放在&lt;JAVA_HOMT&gt;\lib目录或-XBootclasspath参数指定的路径中的类库加载到内存中。</li>
@@ -190,7 +190,7 @@
 <li>双亲委派模式：双亲委派模式是在Java 1.2后引入的，其工作原理的是，如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式。采用双亲委派模式的是好处是Java类随着它的类加载器一起具备了一种带有优先级的层次关系，通过这种层级关可以避免类的重复加载，当父亲已经加载了该类时，就没有必要子ClassLoader再加载一次。其次是考虑到安全因素，java核心api中定义类型不会被随意替换，假设通过网络传递一个名为java.lang.Integer的类，通过双亲委托模式传递到启动类加载器，而启动类加载器在核心Java API发现这个名字的类，发现该类已被加载，并不会重新加载网络传递的过来的java.lang.Integer，而直接返回已加载过的Integer.class，这样便可以防止核心API库被随意篡改。</li>
 </ul>
 <p>怎么打破双亲委派模型：不仅要基础ClassLoader类，还要重新loadClass和findClass方法。</p>
-<p><strong>八、说说你知道的JVM参数</strong></p>
+<p><span style="font-size: 14pt;"><strong>八、说说你知道的JVM参数</strong></span></p>
 <p>1、堆栈配置相关</p>
 <ul>
 <li>-Xmx3500：最大堆大小为3000m</li>
@@ -222,7 +222,7 @@
 <li>-XX:+PrintGCApplicationStoppedTime：打印应用由于GC而产生的停顿时间</li>
 <li>-Xloggc：将GC日志以文件形式输出</li>
 </ul>
-<p><strong>九、命令行工具</strong></p>
+<p><span style="font-size: 14pt;"><strong>九、命令行工具</strong></span></p>
 <ul>
 <li>jps：虚拟机进程状况</li>
 <li>jstat：虚拟机统计信息监视</li>
@@ -245,7 +245,6 @@
 <li>弱引用：用来描述一些非必须对象，被弱引用关联的对象只能生存到下次垃圾收集器发送之前。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。Jdk1.1提供了WeakReference类来实现弱引用。实际应用：TreadLocal中有个ThreadLocalMap对象，内部Entry继承WeakPrference。当线程执行完，线程销毁，Entry中的ThreadLocal实例对象被回收之后，ThreadLocal中存放的值也会在下一次GC中被回收，避免线程中存储的对象占内存较多。</li>
 <li>虚引用：一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为一个对象设置虚引用的唯一目的就是能在这个对象被收集器回收时收到一个系统通知。Jdk1.2提供了PhantomReference类来实现虚引用。h2database中TempFileDeleter，将每个文件都添加一个虚引用，删除所有文件，判断queue存在，表示有临时文件的file对象引用将要被回收，删除临时文件。</li>
 </ul>
-<p>&nbsp;</p>
 <p>&nbsp;</p>
     </div>
 </template>
