@@ -1,5 +1,9 @@
 npm run build
 
+git add .
+git commit -m 'feat:page'
+git push
+
 cd ../suyan-ms-ph-pages
 rm -rf favicon.ico
 rm -rf index.html
