@@ -171,9 +171,25 @@
 </ul>
 <p>标记的存活对象将会被整理，按照内存地址依次排列，而未被标记的内存会被清理掉。当我们需要给新对象分配内存时，JVM只需要持有一个内存的起始地址即可，这比维护一个空闲列表少了许多开销。</p>
 <div>7、分代收集算法：在Java虚拟机分代垃圾回收机制中，应用程序可用的堆空间可以分为年轻代和老年代，年轻代分为Eden区和From区与To区。当系统创建一个对象的时候，总是在Eden区域操作，当这个区满了，就会触发一次YoungGC，也就是年轻代的垃圾回收。一般来说这时候不是所有的对象都没用了，所以就会把还能用的对象复制到From区。这样整个Eden区就被整理干净了，可以继续创建新的对象。当Eden区再次被用完，就再触发一次YoungGC。这次触发YoungGC后，会将Eden区与From区还在被使用的对象复制到To区，再下一次YoungGC的时候，则是将Eden区与To区中还在使用的对方复制到From区。经过若干次YoungGC后，有些对象在From与To之间来回游荡，这时候From区与To区亮出了底线(阙值)，这些还没挂掉的对象会被复制到老年代。老年代空间被用完，就会执行FullGC，也就是全量回收。</div>
-<div>&nbsp;</div>
-<div>&nbsp;</div>
-<div>&nbsp;</div>
+<p><strong>六、类加载的过程</strong></p>
+<ol>
+<li>加载(Loading)：读取类文件产生二进制流，并转为特定数据结构，初步校验cafe babe魔法书、常量池、文件长度、是否有父类等，然后创建对应类的java.lang.Class对象。</li>
+<li>验证(Verification)：文件格式验证、元数据验证、字节码验证、符号引用验证。</li>
+<li>准备(Preparation)：正式为类变量分配内存并设置初始值。</li>
+<li>解析(Resolution)：把间接引用转换为直接引用。</li>
+<li>初始化(Initializtion)：执行&lt;clinit&gt;方法，初始化类变量、静态代码库</li>
+<li>使用(Using)</li>
+<li>卸载(Unloading)</li>
+</ol>
+<p><strong>七、说说你了解的类加载器</strong></p>
+<p>类加载器就是根据指定全限名称将class文件加载到JVM内存，转成Class对象。</p>
+<ul>
+<li>启动类加载器(Bootstrap ClassLoader)：由C++语言实现(针对HotSpot)，负责将存放在&lt;JAVA_HOMT&gt;\lib目录或-XBootclasspath参数指定的路径中的类库加载到内存中。</li>
+<li>扩展类加载器(Extension ClassLoader)：负责加载&lt;JAVA_HOME&gt;\lib\ext目录或java.ext.dirs系统变量指定的路径中国的所有类库。</li>
+<li>应用程序加载器(Application ClassLoader)：负责加载用户类路径(classpath)上指定的类库，我们可以直接使用这个类加载器。一般情况，如果我们没有自定义类加载器默认就是用这个加载器。</li>
+<li>双亲委派模式：双亲委派模式是在Java 1.2后引入的，其工作原理的是，如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式。采用双亲委派模式的是好处是Java类随着它的类加载器一起具备了一种带有优先级的层次关系，通过这种层级关可以避免类的重复加载，当父亲已经加载了该类时，就没有必要子ClassLoader再加载一次。其次是考虑到安全因素，java核心api中定义类型不会被随意替换，假设通过网络传递一个名为java.lang.Integer的类，通过双亲委托模式传递到启动类加载器，而启动类加载器在核心Java API发现这个名字的类，发现该类已被加载，并不会重新加载网络传递的过来的java.lang.Integer，而直接返回已加载过的Integer.class，这样便可以防止核心API库被随意篡改。</li>
+</ul>
+<p>怎么打破双亲委派模型：不仅要基础ClassLoader类，还要重新loadClass和findClass方法。</p>
     </div>
 </template>
 
