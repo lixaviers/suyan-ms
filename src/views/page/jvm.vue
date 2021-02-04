@@ -240,8 +240,13 @@
 </ul>
 <p><span style="font-size: 14pt;"><strong>十一、强引用、软引用、弱引用、虚引用是什么以及应用</strong></span></p>
 <ul>
-<li><span style="font-size: 12pt;">强引用：</span></li>
+<li><span style="font-size: 12pt;">强引用：类型&rdquo;Object obj = new Object&ldquo;这类的引用，只要强引用还存在，垃圾收集器永远不会回收掉被引用的对象。回收情况：1、main方法执行完，线程中虚拟机栈的局部变量清空，obj作为局部变量被回收掉。2、设置obj=null的情况下。</span></li>
+<li><span style="font-size: 12pt;">软引用：用来描述一下还有用但并非必须的对象。对应软引用关联着的对象，在系统将要发生内存溢出异常之前，将会把这些对象列进回收范围进行第二次回收。如果这次回收还没有足够内存才会抛出内存溢出。Jdk1.2提供SoftReference类来实现软引用。回收情况：1、在发生在OOM异常之前，软引用对象会被JVM回收。2、设置对象=null。Spring中的ConcurrentReferenceHashMap类。</span></li>
+<li>弱引用：用来描述一些非必须对象，被弱引用关联的对象只能生存到下次垃圾收集器发送之前。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。Jdk1.1提供了WeakReference类来实现弱引用。实际应用：TreadLocal中有个ThreadLocalMap对象，内部Entry继承WeakPrference。当线程执行完，线程销毁，Entry中的ThreadLocal实例对象被回收之后，ThreadLocal中存放的值也会在下一次GC中被回收，避免线程中存储的对象占内存较多。</li>
+<li>虚引用：一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为一个对象设置虚引用的唯一目的就是能在这个对象被收集器回收时收到一个系统通知。Jdk1.2提供了PhantomReference类来实现虚引用。h2database中TempFileDeleter，将每个文件都添加一个虚引用，删除所有文件，判断queue存在，表示有临时文件的file对象引用将要被回收，删除临时文件。</li>
 </ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
     </div>
 </template>
 
