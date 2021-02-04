@@ -63,7 +63,7 @@
 <li>Redis：分布式锁</li>
 </ul>
 <h3>五、如何让RocketMQ保证消息的顺序消费？</h3>
-<p>多个queue只能保证单个queue里的顺序，queue是典型的FIFO，天然顺序。多个queue同时消费是无法绝对保证消息的有序性的。同一个topic，同一个queue，发消息的时候一个线程去发送消息，消费的时候一个线程去消费一个queue里的消息。</p>
+<p>多个queue只能保证单个queue里的顺序，queue是典型的FIFO(First Input First Output)先进先出队列，天然顺序。多个queue同时消费是无法绝对保证消息的有序性的。同一个topic，同一个queue，发消息的时候一个线程去发送消息，消费的时候一个线程去消费一个queue里的消息。</p>
 <p>怎么保证消息发送到同一个queue？</p>
 <p>RocketMQ给我们提供了MessageQueueSelector接口，可以自己重写里面的接口，实现自己的算法。比如：i % 2 == 0，那就都放到queue1里，否则放到queue2里。</p>
 <h3>六、RocketMQ如何保证消息不丢失？</h3>
