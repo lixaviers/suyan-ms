@@ -190,6 +190,58 @@
 <li>双亲委派模式：双亲委派模式是在Java 1.2后引入的，其工作原理的是，如果一个类加载器收到了类加载请求，它并不会自己先去加载，而是把这个请求委托给父类的加载器去执行，如果父类加载器还存在其父类加载器，则进一步向上委托，依次递归，请求最终将到达顶层的启动类加载器，如果父类加载器可以完成类加载任务，就成功返回，倘若父类加载器无法完成此加载任务，子加载器才会尝试自己去加载，这就是双亲委派模式。采用双亲委派模式的是好处是Java类随着它的类加载器一起具备了一种带有优先级的层次关系，通过这种层级关可以避免类的重复加载，当父亲已经加载了该类时，就没有必要子ClassLoader再加载一次。其次是考虑到安全因素，java核心api中定义类型不会被随意替换，假设通过网络传递一个名为java.lang.Integer的类，通过双亲委托模式传递到启动类加载器，而启动类加载器在核心Java API发现这个名字的类，发现该类已被加载，并不会重新加载网络传递的过来的java.lang.Integer，而直接返回已加载过的Integer.class，这样便可以防止核心API库被随意篡改。</li>
 </ul>
 <p>怎么打破双亲委派模型：不仅要基础ClassLoader类，还要重新loadClass和findClass方法。</p>
+<p><strong>八、说说你知道的JVM参数</strong></p>
+<p>1、堆栈配置相关</p>
+<ul>
+<li>-Xmx3500：最大堆大小为3000m</li>
+<li>-Xms2000：初始堆大小为2000m</li>
+<li>-Xmn2g：年轻代大小为2g</li>
+<li>-Xss128k：每个线程的堆栈大小为128k</li>
+<li>-XX:MaxPermSize=16m：持久代大小为16m</li>
+<li>-XX:NewRatio=4：设置年轻代(包括Eden和两个Survivor区)与老年代的比值(除去持久代)</li>
+<li>-XX:SurvivorRatio=4：设置年轻代中Eden区与Survivor区的大小比值。设置为4，则两个Survivor区与一个Eden区的比值为2:4，一个Survivor区占整个年轻代的1/6</li>
+<li>-XX:MaxTenuringThreshold=0：设置垃圾最大年龄。如果设置为0的话，则年轻代对象不经过Survivor区，直接进入老年代</li>
+</ul>
+<p>2、垃圾收集器相关</p>
+<ul>
+<li>-XX:+UseParallelGC：设置垃圾收集器为并行收集器</li>
+<li>-XX:ParallelGCThreads=20：配置并行收集器的线程数</li>
+<li>-XX:+UseConcMarkSweepGC：设置年老代为并发收集</li>
+<li>-XX:CMSFullGCsBeforeCompaction：由于并发器不对内存空间进行压缩、整理，所以运行一段时间以后会产生碎片，使得运行效率降低。此值设置运行多少次GC以后对内存空间进行压缩、整理</li>
+<li>-XX:+UseCMSCompactAtFullCollection：打开对老年代的压缩。可能会影响性能，但是可以消除碎片</li>
+<li>-XX:+UseG1GC：谁知垃圾收集器为G1收集器</li>
+</ul>
+<p>3、辅助信息相关</p>
+<ul>
+<li>-XX:+PrintGC：打印GC的简要信息</li>
+<li>-XX:+PrintGCDetails：打印GC详细信息</li>
+<li>-XX:+printHeapAtGC：每次GC前后打印对信息</li>
+<li>-XX:+printGCTimeStaples：打印GC发生的时间</li>
+<li>-XX:+PrintGCDateStamps：打印GC发生的时间戳(以日期的形式)</li>
+<li>-XX:+PrintGCApplicationConcurrentTime：打印应用程序的执行时间</li>
+<li>-XX:+PrintGCApplicationStoppedTime：打印应用由于GC而产生的停顿时间</li>
+<li>-Xloggc：将GC日志以文件形式输出</li>
+</ul>
+<p><strong>九、命令行工具</strong></p>
+<ul>
+<li>jps：虚拟机进程状况</li>
+<li>jstat：虚拟机统计信息监视</li>
+<li>jinfo：Java配置信息</li>
+<li>jmap：Java内存映像</li>
+<li>jhat：虚拟机堆转储快照分享</li>
+<li>jstack：Java堆栈跟踪</li>
+</ul>
+<p><span style="font-size: 14pt;"><strong>十、调优工具</strong></span></p>
+<ul>
+<li>jconsole：Java Monitoring and Management Console是从Java5开始，在JDK中自带的java监控和管理控制台，用户对JVM中内存，线程和类等的监控。</li>
+<li>jvisualvm：jdk自带全弄工具，可以分析内存快照、线程快照；监控内存变化、GC变化。</li>
+<li>MAT(Memory Analyzer Tool)：一个基于Eclipse的内存分析工具，是一个快速、功能丰富的Java heap分析工具，它可以帮助我们查找内存泄漏和减少内存消耗。</li>
+<li>GChisto：一款专业分析GC日志的工具。</li>
+</ul>
+<p><span style="font-size: 14pt;"><strong>十一、强引用、软引用、弱引用、虚引用是什么以及应用</strong></span></p>
+<ul>
+<li><span style="font-size: 12pt;">强引用：</span></li>
+</ul>
     </div>
 </template>
 
