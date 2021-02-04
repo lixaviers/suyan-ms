@@ -29,6 +29,10 @@ const menuRouters = [
                 path: 'jvm', name: 'jvm', component: (resolve) => require(['./views/page/jvm.vue'], resolve),
                 meta: { title: 'JVM汇总', },
             },
+            {
+                path: 'mq', name: 'mq', component: (resolve) => require(['./views/page/mq.vue'], resolve),
+                meta: { title: '消息中间件', },
+            },
         ]
     }
 ];
