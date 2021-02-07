@@ -23,27 +23,27 @@
 </tbody>
 </table>
 <h3>二、RocketMQ由哪些角色组成，每个角色作用和特点是什么？</h3>
-<table style="border-collapse: collapse; width: 100%;" border="1">
+<table style="border-collapse: collapse; width: auto;" border="1">
 <tbody>
 <tr>
-<td style="width: 48.8717%;">角色</td>
-<td style="width: 48.948%;">作用</td>
+<td style="width: 80px;">角色</td>
+<td style="width: auto;">作用</td>
 </tr>
 <tr>
-<td style="width: 48.8717%;">Nameserver</td>
-<td style="width: 48.948%;">无状态，动态列表；这也是和zk的重要区别之一，zk有状态</td>
+<td style="width: 80px;">Nameserver</td>
+<td style="width: auto;">无状态，动态列表；这也是和zk的重要区别之一，zk有状态</td>
 </tr>
 <tr>
-<td style="width: 48.8717%;">Producer</td>
-<td style="width: 48.948%;">消息生产着，负责发消息到Broker</td>
+<td style="width: 80px;">Producer</td>
+<td style="width: auto;">消息生产着，负责发消息到Broker</td>
 </tr>
 <tr>
-<td style="width: 48.8717%;">Broker</td>
-<td style="width: 48.948%;">就是MQ本身，负责收发消息、持久化消息等</td>
+<td style="width: 80px;">Broker</td>
+<td style="width: auto;">就是MQ本身，负责收发消息、持久化消息等</td>
 </tr>
 <tr>
-<td style="width: 48.8717%;">Consumer</td>
-<td style="width: 48.948%;">消息消费者，负责从Broker上拉去消息进行消费，消费完进行ack</td>
+<td style="width: 80px;">Consumer</td>
+<td style="width: auto;">消息消费者，负责从Broker上拉去消息进行消费，消费完进行ack</td>
 </tr>
 </tbody>
 </table>
