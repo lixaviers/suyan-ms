@@ -26,6 +26,10 @@ const menuRouters = [
                 meta: { title: 'Java基础', },
             },
             {
+                path: 'collection', name: 'collection', component: (resolve) => require(['./views/page/collection.vue'], resolve),
+                meta: { title: '集合框架', },
+            },
+            {
                 path: 'jvm', name: 'jvm', component: (resolve) => require(['./views/page/jvm.vue'], resolve),
                 meta: { title: 'JVM汇总', },
             },
