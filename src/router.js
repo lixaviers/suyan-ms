@@ -37,6 +37,10 @@ const menuRouters = [
                 path: 'mq', name: 'mq', component: (resolve) => require(['./views/page/mq.vue'], resolve),
                 meta: { title: '消息中间件', },
             },
+            {
+                path: 'mysql', name: 'mysql', component: (resolve) => require(['./views/page/mysql.vue'], resolve),
+                meta: { title: 'MySQL', },
+            },
         ]
     }
 ];
