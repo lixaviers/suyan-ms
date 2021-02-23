@@ -77,7 +77,7 @@
 <li>系统奔溃后，MylSAM恢复起来更困难，能否接受。</li>
 <li>MySQL5.5版本开始InnoDB已经成为MySQL的默认引擎(之前是MylSAM)。</li>
 </ul>
-<p>四、索引优缺点及使用注意事项</p>
+<h3>四、索引优缺点及使用注意事项</h3>
 <p>1、优点</p>
 <ul>
 <li>大大加速数据的查询速度。</li>
@@ -87,8 +87,101 @@
 </ul>
 <p>2、缺点</p>
 <ul>
-<li>&nbsp;</li>
+<li>创建索引和维护索引需要消耗时间，并且随着数据量的增加，时间也会增加。</li>
+<li>索引需要占用磁盘空间。</li>
+<li>对数据表中的数据进行增加、修改、删除时，索引也要动态的维护，降低了维护的速度。</li>
 </ul>
+<p>3、使用注意事项</p>
+<ul>
+<li>更新频繁的列不应设置索引。</li>
+<li>数据量小的表不要使用索引。</li>
+<li>重复数据多的字段不应设为索引(重复的数据超过15%就不该建索引)。</li>
+<li>在where和join中出现的列建立索引。</li>
+<li>不要在where条件语句=的左边进行函数、运算符或表达式的计算。</li>
+<li>不要使用&lt;&gt;，!=，not in，索引不生效。</li>
+<li>避免对字段进行null判断，索引不生效。</li>
+<li>like '%xxx'，索引不生效。</li>
+<li>数据类型隐形转换，索引不生效。</li>
+<li>避免使用or，可以用union替代。</li>
+<li>使用exist代替in(表中数据越多，exist的效率就比in越大)。</li>
+<li>不用使用select *。</li>
+</ul>
+<h3>五、聚集索引与非聚集索引</h3>
+<p>聚集索引：来源于生活尝试。这种索引可以说是按照数据的物理存储进行划分的。对于一堆记录来说，使用聚集索引就是对这堆记录堆划分。即主要描述的是物理上的存储。</p>
+<p>非聚集索引：也可以从生活中找到映射。强调的是逻辑分类。可以说是定义了一套存储规则，而需要有一块控件来维护这个规则，这个被称之为索引表。</p>
+<p>区别：</p>
+<ul>
+<li>聚集索引可以帮助把很大的范围迅速减小范围。但是查找改记录，就要从这个小范围中扫描了。</li>
+<li>非聚集索引把一个很大的范围转换成一个小的地图。你需要在这个小地图中找你要寻找的信息位置。然后通过这个位置，再去找你所需要的记录。</li>
+</ul>
+<p>场景：</p>
+<table style="border-collapse: collapse; width: auto;" border="1">
+<tbody>
+<tr>
+<td style="width: 120px;">动作描述</td>
+<td style="width: 100px; text-align: center;">使用聚集索引</td>
+<td style="width: 115px; text-align: center;">使用非聚集索引</td>
+</tr>
+<tr>
+<td style="width: 120px;">列经常分组排序</td>
+<td style="width: 100px; text-align: center;">✔️</td>
+<td style="width: 115px; text-align: center;">✔️</td>
+</tr>
+<tr>
+<td style="width: 120px;">返回某范围内的数据</td>
+<td style="width: 100px; text-align: center;">✔️</td>
+<td style="width: 115px; text-align: center;">&times;</td>
+</tr>
+<tr>
+<td style="width: 120px;">很小的不同值</td>
+<td style="width: 100px; text-align: center;">&times;</td>
+<td style="width: 115px; text-align: center;">&times;</td>
+</tr>
+<tr>
+<td style="width: 120px;">小数目不同值</td>
+<td style="width: 100px; text-align: center;">✔️</td>
+<td style="width: 115px; text-align: center;">&times;</td>
+</tr>
+<tr>
+<td style="width: 120px;">大数据不同值</td>
+<td style="width: 100px; text-align: center;">&times;</td>
+<td style="width: 115px; text-align: center;">✔️</td>
+</tr>
+<tr>
+<td style="width: 120px;">频繁更新的列</td>
+<td style="width: 100px; text-align: center;">&times;</td>
+<td style="width: 115px; text-align: center;">✔️</td>
+</tr>
+<tr>
+<td style="width: 120px;">外键列</td>
+<td style="width: 100px; text-align: center;">✔️</td>
+<td style="width: 115px; text-align: center;">&times;</td>
+</tr>
+<tr>
+<td style="width: 120px;">主键列</td>
+<td style="width: 100px; text-align: center;">✔️</td>
+<td style="width: 115px; text-align: center;">✔️</td>
+</tr>
+<tr>
+<td style="width: 120px;">频繁修改索引列</td>
+<td style="width: 100px; text-align: center;">&times;</td>
+<td style="width: 115px; text-align: center;">✔️</td>
+</tr>
+</tbody>
+</table>
+<h3>六、DELETE 和 TRUNCATE区别</h3>
+<ul>
+<li>灵活性：delete可以条件删除数据，而truncate只能删除表的所有数据。</li>
+<li>效率：delete &lt; truncate，delete是一行一行的删除，truncate会重建表结构。</li>
+<li>事务：truncate是DDL语句，需要drop权限，因此会隐式提交，不能回滚；delete是DML语句，可以回滚。</li>
+<li>触发器：truncate不能触发任何delete触发器；delete可以触发delete触发器。</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
     </div>
 </template>
