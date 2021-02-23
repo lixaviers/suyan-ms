@@ -66,6 +66,9 @@
 <li>InnoDB支持MVCC，MylSAM不支持。MVCC(Multi-Version Concurrency Control)：多版本的并发控制协议</li>
 <li>InnoDB支持外键，MylSAM不支持。</li>
 <li>InnoDB不支持全文检索，MylSAM支持。</li>
+<li>InnoDB不支持FULLTEXT类型的索引。</li>
+<li>InnoDB中不保存表的行数，如select count(1)需要扫描整表，MylSAM只要简单的读出保存好的行数即可，当count语句包含where也需要扫描整个表。</li>
+<li>清空整个表时，InnoDB是一行一行的删除，效率非常慢。MylSAM则会重建表。</li>
 </ul>
 <p>如何选择：</p>
 <ul>
@@ -74,7 +77,18 @@
 <li>系统奔溃后，MylSAM恢复起来更困难，能否接受。</li>
 <li>MySQL5.5版本开始InnoDB已经成为MySQL的默认引擎(之前是MylSAM)。</li>
 </ul>
-<p>&nbsp;</p>
+<p>四、索引优缺点及使用注意事项</p>
+<p>1、优点</p>
+<ul>
+<li>大大加速数据的查询速度。</li>
+<li>使用分组和排序进行数据查询时，可以显著减少查询时分组和排序时间。</li>
+<li>唯一索引能够保证数据库表中每一行数据的唯一性。</li>
+<li>在实现数据的参考完整性方面，可以减速表和表之间的连接。</li>
+</ul>
+<p>2、缺点</p>
+<ul>
+<li>&nbsp;</li>
+</ul>
 <p>&nbsp;</p>
     </div>
 </template>
