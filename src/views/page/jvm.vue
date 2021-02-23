@@ -245,6 +245,15 @@
 <li>弱引用：用来描述一些非必须对象，被弱引用关联的对象只能生存到下次垃圾收集器发送之前。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉只被弱引用关联的对象。Jdk1.1提供了WeakReference类来实现弱引用。实际应用：TreadLocal中有个ThreadLocalMap对象，内部Entry继承WeakPrference。当线程执行完，线程销毁，Entry中的ThreadLocal实例对象被回收之后，ThreadLocal中存放的值也会在下一次GC中被回收，避免线程中存储的对象占内存较多。</li>
 <li>虚引用：一个对象是否有虚引用的存在，完全不会对其生存时间构成影响，也无法通过虚引用来取得一个对象实例。为一个对象设置虚引用的唯一目的就是能在这个对象被收集器回收时收到一个系统通知。Jdk1.2提供了PhantomReference类来实现虚引用。h2database中TempFileDeleter，将每个文件都添加一个虚引用，删除所有文件，判断queue存在，表示有临时文件的file对象引用将要被回收，删除临时文件。</li>
 </ul>
+<h3>十二、Full GC频繁的原因</h3>
+<p>触发的条件：</p>
+<ul>
+<li>System.gc()方法的调用：此方法的调用是建议JVM进行Full GC，虽然只是建议而非一定，但很多情况下它会触发 Full GC，从而增加Full GC的频率，也即增加了间歇性停顿的次数。强烈影响系建议能不使用此方法就别使用，让虚拟机自己去管理它的内存，可通过通过-XX:+ DisableExplicitGC来禁止RMI（Java远程方法调用）调用System.gc。</li>
+<li>旧生代空间不足：旧生代空间只有在新生代对象转入及创建为大对象、大数组时才会出现不足的现象，当执行Full GC后空间仍然不足，则抛出错误：java.lang.OutOfMemoryError: Java heap space 。为避免以上两种状况引起的FullGC，调优时应尽量做到让对象在Minor GC阶段被回收、让对象在新生代多存活一段时间及不要创建过大的对象及数组。</li>
+<li>Permanet Generation空间满了：Permanet Generation中存放的为一些class的信息等，当系统中要加载的类、反射的类和调用的方法较多时，Permanet Generation可能会被占满，在未配置为采用CMS GC的情况下会执行Full GC。如果经过Full GC仍然回收不了，那么JVM会抛出错误信息：java.lang.OutOfMemoryError: PermGen space 。为避免Perm Gen占满造成Full GC现象，可采用的方法为增大Perm Gen空间或转为使用CMS GC。</li>
+<li>通过Minor GC后进入老年代的平均大小大于老年代的可用内存。</li>
+<li>由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代可用内存不足(老年代可用内存小于该对象)。</li>
+</ul>
 <p>&nbsp;</p>
     </div>
 </template>
