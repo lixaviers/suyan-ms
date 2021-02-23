@@ -118,52 +118,52 @@
 <table style="border-collapse: collapse; width: auto;" border="1">
 <tbody>
 <tr>
-<td style="width: 120px;">动作描述</td>
+<td style="width: 140px;">动作描述</td>
 <td style="width: 100px; text-align: center;">使用聚集索引</td>
 <td style="width: 115px; text-align: center;">使用非聚集索引</td>
 </tr>
 <tr>
-<td style="width: 120px;">列经常分组排序</td>
+<td style="width: 140px;">列经常分组排序</td>
 <td style="width: 100px; text-align: center;">✔️</td>
 <td style="width: 115px; text-align: center;">✔️</td>
 </tr>
 <tr>
-<td style="width: 120px;">返回某范围内的数据</td>
+<td style="width: 140px;">返回某范围内的数据</td>
 <td style="width: 100px; text-align: center;">✔️</td>
 <td style="width: 115px; text-align: center;">&times;</td>
 </tr>
 <tr>
-<td style="width: 120px;">很小的不同值</td>
+<td style="width: 140px;">很小的不同值</td>
 <td style="width: 100px; text-align: center;">&times;</td>
 <td style="width: 115px; text-align: center;">&times;</td>
 </tr>
 <tr>
-<td style="width: 120px;">小数目不同值</td>
+<td style="width: 140px;">小数目不同值</td>
 <td style="width: 100px; text-align: center;">✔️</td>
 <td style="width: 115px; text-align: center;">&times;</td>
 </tr>
 <tr>
-<td style="width: 120px;">大数据不同值</td>
+<td style="width: 140px;">大数据不同值</td>
 <td style="width: 100px; text-align: center;">&times;</td>
 <td style="width: 115px; text-align: center;">✔️</td>
 </tr>
 <tr>
-<td style="width: 120px;">频繁更新的列</td>
+<td style="width: 140px;">频繁更新的列</td>
 <td style="width: 100px; text-align: center;">&times;</td>
 <td style="width: 115px; text-align: center;">✔️</td>
 </tr>
 <tr>
-<td style="width: 120px;">外键列</td>
+<td style="width: 140px;">外键列</td>
 <td style="width: 100px; text-align: center;">✔️</td>
 <td style="width: 115px; text-align: center;">&times;</td>
 </tr>
 <tr>
-<td style="width: 120px;">主键列</td>
+<td style="width: 140px;">主键列</td>
 <td style="width: 100px; text-align: center;">✔️</td>
 <td style="width: 115px; text-align: center;">✔️</td>
 </tr>
 <tr>
-<td style="width: 120px;">频繁修改索引列</td>
+<td style="width: 140px;">频繁修改索引列</td>
 <td style="width: 100px; text-align: center;">&times;</td>
 <td style="width: 115px; text-align: center;">✔️</td>
 </tr>
