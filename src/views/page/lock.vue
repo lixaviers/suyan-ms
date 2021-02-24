@@ -21,6 +21,9 @@
 <li>有序性：Java允许编译器和处理器对指令进行重排，但是指令重排并不会影响单线程的顺序，它影响的是多线程并发执行的顺序性。synchronized保证了每个时刻都只有一个线程同步代码块，也就确定了线程执行同步代码块是分先后顺序的，保证了有序性。</li>
 <li>可重入性：synchronized和ReentrantLock都是可重入锁。当一个线程视图操作一个由其它线程持有的对象锁的临界资源时，将会处于阻塞状态，但当一个线程再次请求自己持有对象锁的临界资源时，这种情况属于重入锁。通俗一点讲就是说一个线程拥有了锁仍然还可以重复申请锁。</li>
 </ul>
+<p>2、用法：synchronized可以修饰静态方法、成员函数，同时还可以直接定义代码块，但是归根结底它上锁的资源只有两类：一个是对象，一个是类。</p>
+<p>3、实现：synchronized有两种形式上锁，一个是对方法上锁，一个是构造同步代码块。它们的底层实现其实都一样，在进入同步代码之前先获取锁，获取到锁之后锁的计数器+1，同步代码执行完锁的计数器-1，如果获取失败就阻塞式等待锁的释放。只是它们在同步块识别方式上有所不一样，从class字节码文件可以表现出来，一个是通过方法flags标志，一个是monitorenter和monitorexit指令操作。</p>
+<p>4、synchronized锁的底层实现：在理解锁实现原理之前先了解一下Java的对象头和Monitor，在JVM中，对象是分为三部分存在的：对象头、实例数据、对其填充。实例数据和对其填充与synchronized无关，实例数据存放类的属性数据信息，包括父类的属性信息，如果是数组的实例部分还包括数字的长度，这部分内存按4字节对其；对其填充不是必须部分，由于虚拟机要求对象起始地址必须是8字节的整数倍，对其填充仅仅是为了使字节对其。对象头是我们需要关注的重点，它是synchronized实现锁的基础，因为synchronized申请锁、上锁、释放锁都与对象头有关。对象头主要结构是由 Mark Word 和 Class Metadata Address 组成，其中 Mark Word 存储对象的hashCode、锁信息或分代年龄或GC标志等信息，Class Metadata Address 是类型指针指向对象的类元数据，JVM通过该指针确定该对象是哪个类的实例。锁也分不同状态，JDK6之前只有两个状态：无锁、有锁(重量级锁)，而在JDK6之后对synchronized进行了优化，新增了两种状态，总共就是四个状态：无锁状态、偏向锁、轻量级锁、重量级锁。锁的类型和状态在对象头 Mark Word 中都有记录，在申请锁、锁升级等过程中JVM都需要读取对象的 Mark Word 数据。每一个锁都对应一个monitor对象，在HotSpot虚拟机中它是由ObjectMonitor实现的(C++实现)。每个对象都存在这一个monitor与之关联，对象与其monitor之间的关系有多种实现方式，如monitor可以与对象一起创建销毁或当线程试图获取对象锁时自动生成，但当一个monitor被某个线程持有后，它便处于锁定状态。ObjectMonitor中有两个队列_WaitSet和_EntryList，用来保存ObjectWaiter对象列表(每个等待锁的线程都会被封装ObjectWaiter对象)，_owner指向持有ObjectMonitor对象的线程，当多个线程同时访问一段同步代码时，首先会进入_EntryList 集合，当线程获取到对象的monitor后进入_Owner 区域并把monitor中的owner变量设置为当前线程，同时monitor中的计数器count加1，若线程调用 wait() 方法，将释放当前持有的monitor，owner变量恢复为null，count自减1，同时该线程进入 WaitSe t集合中等待被唤醒。若当前线程执行完毕也将释放monitor(锁)并复位变量的值，以便其他线程进入获取monitor(锁)。monitor对象存在于每个Java对象的对象头中(存储的指针的指向)，synchronized锁便是通过这种方式获取锁的，也是为什么Java中任意对象可以作为锁的原因，同时也是notify/notifyAll/wait等方法存在于顶级对象Object中的原因。</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
