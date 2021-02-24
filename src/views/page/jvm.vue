@@ -230,6 +230,15 @@
 <li>jmap：Java内存映像</li>
 <li>jhat：虚拟机堆转储快照分享</li>
 <li>jstack：Java堆栈跟踪</li>
+<li>jcmd pid VM.flags : 查看JVM的启动参数</li>
+<li>jcmd pid help : 列出当前运行的Java进程可以执行的操作</li>
+<li>jcmd pid help JFR.dump : 查看具体命令的选项</li>
+<li>jcmd pid PerfCounter.print : 查看JVM 性能相关的参数</li>
+<li>jcmd pid VM.uptime : 查看JVM 运行时长</li>
+<li>jcmd pid GC.class_histogram : 查看系统中类的统计信息</li>
+<li>jcmd pid Thread.print : 查看线程堆栈信息</li>
+<li>jcmd pid GC.heap_dump 文件路径 ： 导出heap dump文件，导出的文件可以通过jvisualvm查看</li>
+<li>jcmd pid VM.system_properties : 查看JVM系统参数</li>
 </ul>
 <p><span style="font-size: 14pt;"><strong>十、调优工具</strong></span></p>
 <ul>
