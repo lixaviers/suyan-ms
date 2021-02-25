@@ -7,9 +7,6 @@ html {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
 }
-h3 {
-  margin: 10px 0;
-}
 body {
   font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,\\5FAE\8F6F\96C5\9ED1,Arial,sans-serif;
   font-size: 16px;
@@ -185,10 +182,13 @@ ol, li {
   position: relative;
   padding: 0 0 20px 200px;
   .suyan__content {
-    text-indent: 1em;
     margin: 20px 20px 0px 20px;
     min-height: calc(~"100vh - 82px");
     position: relative;
+
+    p {
+      text-indent: 1em;
+    }
   }
 }
 
@@ -279,6 +279,9 @@ ol, li {
 
 
 .suyan__home {
+  h3,h4 {
+    margin: 10px 0;
+  }
   .main {
     padding-right: 260px;
   }

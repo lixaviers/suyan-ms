@@ -2,7 +2,7 @@
     <div class="suyan__home">
         <h1>集合框架<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
         <h3>一、ArrayList</h3>
-<p>&nbsp;</p>
+<p>待完成</p>
 <h3>二、HashMap</h3>
 <h4>2.1 HashMap的特性</h4>
 <ul>
