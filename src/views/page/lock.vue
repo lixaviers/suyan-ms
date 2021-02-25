@@ -41,6 +41,57 @@
 <li>自适应自旋锁：这种相当于是对自旋锁优化方式的进一步优化，它的自旋次数不再固定，其自旋的次数由前一次在同一个锁上的自旋时间及锁的拥有者的状态来决定，这就解决了自旋锁带来的缺点。</li>
 </ul>
 <p><a href="https://cloud.tencent.com/developer/article/1465413" target="_blank" rel="noopener">参考文章</a></p>
+<h3>四、Lock</h3>
+<p>Lock是jdk1.5后新增的。</p>
+<ul>
+<li>Lock和ReadWriteLock是两大锁的根接口，Lock代表实现类是ReentrantLock(可重入锁)，ReadWriteLock(读写锁)的代表实现类是ReentrantReadWriteLock。Lock接口支持那些语义不同(重入、公平等)的锁规则，可以在非阻塞式结构的上下文(包括hand-over-hand和锁重排算法)中使用这些规则。ReadWriteLock接口以类似方式定义了一些读取者可以共享而写入者独占的锁。此包只提供了一个实现，即ReentrantReadWriteLock，因为它适用于大部分的标准用法上下文，也可以创建自己的、适用于非标准要求的实现。</li>
+<li>Condition接口描述了可能会与锁有关的条件变量。这些变量在用法上与使用Object.wait访问的隐式监视器类似，但提供了更强大的功能。需要特别指出的是，单个Lock可能与多个Condition对象关联。为了避免兼容性问题，Condition方法的名称与对应的Object版本中的不同。</li>
+</ul>
+<p>Lock不是Java语言内置的，synchronized是Java语言的关键字，因此是内置特效。Lock是一个类，通过这个类可以实现同步访问。Lock和synchronized有一点非常大的不同，采用synchronized不需要用户去手动释放锁，当synchronized方法或者synchronized代码块执行完成之后，系统会自动让线程释放对象锁的占用。而Lock则必须要用户去手动释放锁，如果没有主动释放锁，就有可能出现导致出现死锁现象。</p>
+<h5>synchronized的局限性与Lock的优点</h5>
+<p>如果一个代码块被synchronized关键字修饰，当一个线程获取了对应的锁，并执行该代码块时，其它线程便只能一直等到直至占有锁的线程释放锁。事实上，占有锁的线程释放锁一般会是以下三种情况之一：</p>
+<ul>
+<li>占有锁的线程执行完了该代码块，然后释放对锁的占有。</li>
+<li>占有锁线程执行发送异常，此时JVM会让线程自动释放锁。</li>
+<li>占有锁线程进入WAITING状态从而释放锁，例如在线程中调用wait()方法等。</li>
+</ul>
+<p>试着考虑以下三种情况：</p>
+<ul>
+<li>在使用synchronized关键字的情况下，假如占有锁的线程由于要等待IO或其它原因(比如调用sleep方法)被阻塞了，但是又没有释放锁，那么其它线程就只能一直等待，别无他法。这会极大影响程序执行效率。因此，就需要有一种机制可以不让等待的线程一直无期限地等待下去(比如只等待一定的时间：解决方案 tryLock(long time, TimeUnit unit)或者能够响应中断： 解决方案 lockInterruptibly())，这种情况可以通过Lock解决。</li>
+<li>当多个线程读写文件时，读操作和写操作会发生冲突现象，写操作和写操作也会发生冲突现象，但是读操作和读操作不会发生冲突现象。但是如果采用synchronized关键字实现同步的话，就会导致一个问题，即当多个线程都只是进行读操作时，也只有一个线程可以进行读操作，其它线程只能等待锁的释放而无法进行读操作。因此，需要一种机制来使得当多个线程都只是进行读操作时，线程之间不会发生冲突。同样地，Lock也可以解决这种方案(ReentrantReadWriteLock)。</li>
+<li>可以通过Lock得知线程有没有成功获取到锁(ReentrantLock)，这个synchronized无法办到的。</li>
+</ul>
+<p>Lock接口</p>
+<pre class="language-java"><code>// 获取锁  
+void lock()   
+
+// 如果当前线程未被中断，则获取锁，可以响应中断  
+void lockInterruptibly()   
+
+// 返回绑定到此 Lock 实例的新 Condition 实例  
+Condition newCondition()   
+
+// 仅在调用时锁为空闲状态才获取该锁，可以响应中断  
+boolean tryLock()   
+
+// 如果锁在给定的等待时间内空闲，并且当前线程未被中断，则获取锁  
+boolean tryLock(long time, TimeUnit unit)   
+
+// 释放锁  
+void unlock() </code></pre>
+<p><a href="https://www.cnblogs.com/myseries/p/10784076.html" target="_blank" rel="noopener">参考文章</a></p>
+<h3>五、悲观锁 乐观锁</h3>
+<p>乐观锁、悲观锁是一种思想，可以用在很多方面。</p>
+<ul>
+<li>数据库：悲观锁就是for update(锁定查询的行)，乐观锁就是version字段(比较根上一次的版本号，如果一样则更新，如果失败则要重复读-比价-写的操作)。</li>
+<li>JDK：悲观锁就是sync，乐观锁就是原子类(内部使用CAS实现)</li>
+</ul>
+<p>本质来说，悲观锁认为总是有人抢我，乐观锁认为基本没人抢。</p>
+<h5>CAS 乐观锁</h5>
+<p>乐观锁是一种思想，即认为读多写少，遇到并发写的可能性比较低，所以采取在写时先读出当前版本号，然后加锁操作(比较根上一次的版本号，如果一样则更新)，如果失败则要重复读-比较写的操作。</p>
+<p>CAS是一种更新的原子操作，比较当前值跟传入值是否一样，一样则更新，否则失败。CAS顶多算是乐观锁写那一步操作的一种实现罢了，不用CAS自己加锁也是可以的。</p>
+<h5>ABA问题</h5>
+<p>ABA：如果另一个线程修改V值，假设原来是A，先修改成B，在修改成A，当前线程的CAS操作无法分辨当前V值是否发生过变化。</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
     </div>
