@@ -32,6 +32,8 @@
 <li>若其左子树存在，则其左子树中每个节点的值都不大于该节点值。</li>
 <li>若其右子树存在，则其右子树中每个节点的值都不小于该节点值。</li>
 </ul>
+<p>示例：</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://raw.githubusercontent.com/lixaviers/suyan-ms/main/src/assets/20210226-110712.png" alt="" width="365" height="371" /></p>
 <h3>三、二叉树遍历</h3>
 <p>&nbsp;</p>
 <h3>四、平衡二叉树</h3>
