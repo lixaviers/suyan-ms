@@ -43,7 +43,7 @@
 <h4>2.8 HashMap的默认初始化长度为什么是16？为什么必须是2的幂？如果输入值不是2的幂比如10会怎么样？</h4>
 <ol>
 <li>为了数据均匀分布，减少哈希碰撞。因为确定数组位置时用的位运算，若数据不是2的次幂则会增加哈希碰撞的次数和浪费数组空间。</li>
-<li>输入数据若不是2的幂，HashMap通过一通 位移运算和或运算得到的肯定是2的幂次数，并且是离哪个数最近的数字。</li>
+<li>输入数据若不是2的幂，HashMap通过一通 位移运算和或运算得到的肯定是2的幂次数，并且是离那个数最近的数字。</li>
 </ol>
 <h4>2.9 HashMap的参数loadFactor的作用是什么？</h4>
 <p>loadFactor表示HashMap的拥挤程度，影响hash操作到同一个数组位置的概率。默认loadFactor等于0.75，当HashMap里面容纳的元素已经达到HashMap数组长度的75%时，表示HashMap太挤了，需要扩容。在HashMap的构造器中可以定制loadFactor。</p>
@@ -51,7 +51,7 @@
 <p>相同点：都是存储key-value键值对的。</p>
 <p>不同点：</p>
 <ul>
-<li>HashMap运行key-value为null，HashTable不允许。</li>
+<li>HashMap允许key-value为null，HashTable不允许。</li>
 <li>HashMap没有考虑同步，是线程不安全的。HashTable是线程安全的，给api套上了一层synchronized修饰。</li>
 <li>HashMap继承于AbstractMap类，HashTable继承于Dictionary类。</li>
 <li>容量的初始值和增加方式不一样：HashMap默认的容量大小是16，增加容量时，每次将容量变为原始容量*2。HashTable默认的容量大小是11，增加容量时，每次将容量变为原始容量*2+1。</li>
