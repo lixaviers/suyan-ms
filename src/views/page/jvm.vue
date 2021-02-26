@@ -8,6 +8,8 @@
 <li>虚拟机栈（Java Virtual Machine Stacks）：存放基本数据类型、对象的引用、方法出口等，线程私有。</li>
 <li>堆（Heap）：java内存最大的一块，所有对象实例、数组都存放在堆里，GC回收的地方，线程共享。</li>
 <li>方法区（Native Method Stacks）：存放已被加载的类信息、常量、静态变量、即时编译器编译后的代码数据等。回收目标主要是常量池的回收和类型的卸载，各线程共享。</li>
+<li>运行时常量池（Run-Time Constant Pool）</li>
+<li>本地方法栈（Native Method Stacks）</li>
 </ul>
 <p>2、具体虚拟机实现角度</p>
 <p>Java8内存区域划分大致分为6个区域：</p>
