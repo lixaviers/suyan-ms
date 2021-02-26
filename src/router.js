@@ -45,6 +45,10 @@ const menuRouters = [
                 path: 'mysql', name: 'mysql', component: (resolve) => require(['./views/page/mysql.vue'], resolve),
                 meta: { title: 'MySQL', },
             },
+            {
+                path: 'structure', name: 'structure', component: (resolve) => require(['./views/page/structure.vue'], resolve),
+                meta: { title: '数据结构', },
+            },
         ]
     }
 ];

@@ -3,7 +3,7 @@
         <h1>集合框架<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
         <h3>一、ArrayList</h3>
 <p>待完成</p>
-<h3>二、HashMap</h3>
+<h3>二、HashMap <a href="https://www.cnblogs.com/zengcongcong/p/11295349.html" target="_blank" rel="noopener">参考文章</a></h3>
 <h4>2.1 HashMap的特性</h4>
 <ul>
 <li>HashMap存储键值对实现快速存取，允许为null。key值不可以重复，如果key值重复则覆盖。</li>
@@ -16,6 +16,7 @@
 <p>JDK1.8以前HashMap的实现是数组+链表，即使哈希函数取得再好，也很难达到元素百分百均匀分布。当HashMap中有大量的元素都存放到同一个桶中时，这个桶下有一条长长的链表，这个时候HashMap就相当于一个单链表。假如单链表有n个元素，遍历的时间复杂度就是O(n)，完全失去了它的优势。针对这种情况，JDK1.8引入了红黑树(查找时间复杂度为O(log^n))来优化这个问题。</p>
 <p>O(n): 表示该算法是线性算法，时间复杂度为O(n)，就代表数据量增大几倍，耗时也增大几倍。要找到一个数组里面最大的一个数，你要把n个变量都扫描一遍，操作次数为n，那么算法复杂度是O(n)。</p>
 <p>O(log^n)解析：当数据增大n倍时，耗时增大log n倍(这里的log是以2为底的，比如，当数据增大256倍时，耗时只增大8倍，是比线性还要低的时间复杂度)。二分查找就是O(log n)的算法，每找一次排除一半的可能，256个数据中查找只要找8次就可以找到目标。比如我要找到23号的房间钥匙，我从中间切开，找到50编号的位置，然后23在1~50里面，我再把从中间切开变成25，然后23在1~25之间，我再切开变成12.5，然后23在12.5~25之间，依次找下去，直到找到钥匙。这种查找钥匙的方法的复杂度就是O(log^n)。<a href="https://blog.csdn.net/lkp1603645756/article/details/85013126" target="_blank" rel="noopener">参考文章</a></p>
+<p>红黑树相关请移步</p>
 <h4>2.4 HashMap中get是如何实现的</h4>
 <p>对key的hashCode进行hashing，与高16位做异或运算计算下标获取bucket位置。如果在桶的首位上就可以找到就直接返回，否则在树中或者链表中遍历找。如果有hash冲突，则利用equals()方法去遍历链表查找节点。</p>
 <p>其它实现hash函数的方式：平方取中法、除留余数法、伪随机数法。</p>
