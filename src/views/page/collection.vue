@@ -58,7 +58,7 @@
 <li>添加key-value时的hash值算法不同：HashMap添加元素时，是使用自定义的哈希算法。HashTable没有自定义哈希算法，而直接采用的key的hashCode()。</li>
 <li>迭代器：HashMap的迭代器(Iterator)是fail-fast迭代器，而HashTable的enumerator迭代器不是fail-fast的。所以当有其它线程改变了HashMap的结构(增加或者移除元素)，将会抛出ConcurrentModificationException。</li>
 </ul>
-<p>&nbsp;</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://raw.githubusercontent.com/lixaviers/suyan-ms/main/src/assets/20210226-152159.png" alt="" width="659" height="328" /></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>

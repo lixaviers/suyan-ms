@@ -91,7 +91,7 @@
 <li><strong>新节点的父节点为红色</strong>，同时叔父节点的颜色也为红色：因为红色节点必须具有两个黑色子节点，插入新节点颜色为红色，违反了条件，此时只需要变换父节点和叔父节点的颜色为黑色，祖父节点的颜色为红色即可。变换颜色后，只需要考虑祖父节点颜色为红色，是否违反了条件限制，将祖父节点作为&rdquo;新节点&ldquo;，递归进行处理即可。</li>
 <li><strong>新节点的父节点为红色，叔父节点的颜色不为红色。且新节点N是其父节点P的左子节点，同时父节点P是祖父节点G的左节点；或者新节点N是其父节点P的右子节点，同时父节点P是祖父节点G的右子节点：</strong>不妨假设新节点N是其父节点P的左子节点，同时父节点P是祖父节点G的左子节点。因为父节点P为红色，所以祖父节点G颜色为黑色。此时以P节点为轴心执行一次右旋操作，并对父节点P和祖父节点G进行颜色变化。</li>
 </ol>
-<p>&nbsp;</p>
+<p><img style="display: block; margin-left: auto; margin-right: auto;" src="https://raw.githubusercontent.com/lixaviers/suyan-ms/main/src/assets/20210226-152159.png" alt="" width="659" height="328" /></p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
