@@ -49,6 +49,10 @@ const menuRouters = [
                 path: 'structure', name: 'structure', component: (resolve) => require(['./views/page/structure.vue'], resolve),
                 meta: { title: '数据结构', },
             },
+            {
+                path: 'redis', name: 'redis', component: (resolve) => require(['./views/page/redis.vue'], resolve),
+                meta: { title: 'Redis', },
+            },
         ]
     }
 ];
