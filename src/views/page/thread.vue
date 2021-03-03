@@ -64,9 +64,10 @@ BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedEx
 	executor.shutdown();
 }</code></pre>
 <h4>3.3 线程池的关闭</h4>
-<p>可以通过</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<p>可以通过调用线程池的shutdown和shutdownNow方法来关闭线程池，但是它们的实现原理不同，shutdown的原理只是将线程池的状态设置为SHUTDOWN状态，然后中断所有没有正在执行任务的线程。shutdownNow的原理是遍历线程池中的工作线程，然后逐个调用线程的interrupt方法来中断线程，所以无法响应中断的任务可能永远无法终止。shutdownNow会首先将线程池的状态设置成STOP，然后尝试停止所有正在执行或暂停任务的线程，并返回等待执行任务的列表。</p>
+<p>只要调用了这两个关闭方法的其中一个，isShutdown方法就会返回true。当所有的任务都已关闭后，才表示线程池关闭成功，这时调用isTerminaed方法会返回true。至于应该调用哪一种方法来关闭线程池，应该由提交到线程池的任务特效决定，通常调用shutdown来关闭线程池，如果任务不一定要执行完，则可以调用shutdownNow。</p>
+<h4>3.4 线程池的分析</h4>
+<p>线程池的只要工作流程如下图：</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
