@@ -64,7 +64,7 @@ BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedEx
 	executor.shutdown();
 }</code></pre>
 <h4>3.3 线程池的关闭</h4>
-<p>&nbsp;</p>
+<p>可以通过</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
