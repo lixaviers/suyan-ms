@@ -34,6 +34,10 @@ const menuRouters = [
                 meta: { title: 'JVM汇总', },
             },
             {
+                path: 'thread', name: 'thread', component: (resolve) => require(['./views/page/thread.vue'], resolve),
+                meta: { title: '线程', },
+            },
+            {
                 path: 'lock', name: 'lock', component: (resolve) => require(['./views/page/lock.vue'], resolve),
                 meta: { title: '锁机制', },
             },
