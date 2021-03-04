@@ -114,7 +114,8 @@
 </ol>
 <p><a href="https://www.cnblogs.com/lpfuture/p/5796398.html" target="_blank" rel="noopener">一致性哈希算法</a></p>
 <p>添加节点：</p>
-<p>集群创建成功后可以向集群中添加节点，如添加7007节点，执行命令：./redis-trib.rb add-node 127.0.01:7007</p>
+<p>集群创建成功后可以向集群中添加节点，如添加7007节点，执行命令：./redis-trib.rb add-node 127.0.01:7007&nbsp;</p>
+<p>查看</p>
 <h3>七、Redis大key问题</h3>
 <h4>7.1 什么是Redis大key</h4>
 <ol>
