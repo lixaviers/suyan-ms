@@ -2,9 +2,17 @@
     <div class="suyan__home">
         <h1>集合框架<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
         <h3>一、ArrayList</h3>
-<p>待完成</p>
+<p>ArrayList相当于一个对象数组，相对于数组来说，数组效率更高，因为数组是连续的存储数据，索引速度非常的快，数组的大小需要提前固定。ArrayList存储的是Object，相当于一个动态的Object []，在插入两种类型的数据时是不会报错的。但是在使用中，很可能会报类型不匹配的错误，所以ArrayList不是类型安全的，ArrayList因为存储的是Object，所以就涉及了装箱和拆箱的问题，在效率上相对数组来说变低了。jdk1.5之后加入了泛型的概念，让ArrayList在使用的时候更加安全了，同时ArrayList大小可以动态的增加，比数组使用起来更加灵活。</p>
 <h3>二、LinkedList</h3>
-<p>待完成</p>
+<p>链接列表，相当于一个带链表的List，同时LinkedList不具有线程安全，想要让LinkedList具有线程安全，可用Collections.synchronizedList(new LinkedList())。它和ArrayList在本质上，ArrayList是基于数组的数据结构，而LinkedList是基于链表的数据结构。在源码中，LinkedList定义了一个双向的引用。每一个Node，都有一个前驱和后驱。包装了在开头和结尾进行get、remove、insert方法。</p>
+<p>ArrayList和LinkedList比较：</p>
+<ol>
+<li>是否包装线程安全：ArrayList和LinkedList都是不同步的，也就是不保证线程安全。</li>
+<li>底层数据结构：ArrayList底层使用的是Object数组，LinkedList底层使用的是双向链表数据结构(1.6之前为循环链表，1。7取消了循环)。</li>
+<li>插入和删除：ArrayList采用数组存储，插入和删除元素的时间复杂度受元素影响。比如：执行add(E e)方法的时候，ArrayList会默认将指定的元素追加到此列表的末尾，这种情况时间复杂度就是O(1)。但是如果要在指定位置i点插入和删除元素的话(add(int index, E element))，时间复杂度就为O(n-1)。因为在进行上述操作的时候集合中第i和第i个元素之后的n-1个元素都要执行向后/向前移一位的操作。LinkedList采用链表存储，所以插入、删除元素复杂度不收元素位置影响，都是近似O(1)，而数组近似为O(n)。</li>
+<li>是否支持快速随机访问：LinkedList不支持高效的随机访问，而ArrayList支持。快速随机访问就是通过元素的序号快速获取元素对象。</li>
+<li>内存空间占用：ArrayList的空间浪费主要体现在list列表的结尾会预留一定的容量空间，而LinkedList的空间花费则体现在它的每一个元素都需要消耗比ArrayList更多的空间，因为要存放直接后继和直接前驱以及数据。<a href="https://www.cnblogs.com/ysyy/p/10891079.html" target="_blank" rel="noopener">参考文章</a></li>
+</ol>
 <h3>三、HashMap <a href="https://www.cnblogs.com/zengcongcong/p/11295349.html" target="_blank" rel="noopener">参考文章</a></h3>
 <h4>3.1 HashMap的特性</h4>
 <ul>
