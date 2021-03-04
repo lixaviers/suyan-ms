@@ -68,8 +68,23 @@
 <li>添加key-value时的hash值算法不同：HashMap添加元素时，是使用自定义的哈希算法。HashTable没有自定义哈希算法，而直接采用的key的hashCode()。</li>
 <li>迭代器：HashMap的迭代器(Iterator)是fail-fast迭代器，而HashTable的enumerator迭代器不是fail-fast的。所以当有其它线程改变了HashMap的结构(增加或者移除元素)，将会抛出ConcurrentModificationException。</li>
 </ul>
-<h3>四、ConcurrentHashMap</h3>
-<p>待完成</p>
+<h3>四、HashTable</h3>
+<p>待完善</p>
+<h3>五、ConcurrentHashMap</h3>
+<h4>5.1 为何会出现ConcurrentHashMap</h4>
+<ol>
+<li>HashTable在高并发场景下性能低下。</li>
+<li>HashMap不是线程安全的容器。</li>
+<li>同步包装器虽然使用同步方法提示了部分性能，但还是不适合高并发场景下的性能需求。</li>
+</ol>
+<h4>5.2 ConcurrentHashMap如何保证线程安全</h4>
+<ul>
+<li>JDK7：使用的是分离锁(segment)，实际上是一种再入锁(RetrantLock)来保证线程安全。segment的数量是concurrentLevel决定，默认值是16。扩容的时候是针对单个segment扩容的，写操作也是，修改数据的时候锁定的部分，所以比较高效。</li>
+<li>JDK8：segment依然存在，不过不起结构上的作用，只起到保证序列化的兼容性。内部使用volatile来保证数据存储的可见性。利用CAS操作，在特定场景下进行无锁并发操作，内部的锁实现用的是synchronized。在JDK8中，synchronized已经得到性能的优化，并且对比再入锁可以减少内存消耗。在put的过程中如果没有发生冲突，则采用CAS操作进行无锁化更新，只有发生了哈希冲突的时候才锁住，且仅影响发生冲突的那一个链表的更新操作。</li>
+</ul>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
     </div>
 </template>
