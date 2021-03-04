@@ -58,8 +58,89 @@
 <p>RESP，REmote Dictionary Server(远程字段服务)，而Redis的协议规范是Redis Serialization Protocol(Redis序列化协议)，该协议是用于与Redis服务器通信的，用的较多的是Redis-cli通过pipe与Redis服务器联系。协议：客户端以规定格式的形式发送命令给服务器，服务器在执行最后一条命令后，返回结果。</p>
 <p>RESP是redis客户端和服务端之间使用的一种通讯协议。特点：实现简单、快速解析、可读性好。</p>
 <h3>六、Redis有哪些架构模式？讲讲各自的特点</h3>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
+<h4>6.1 单机版</h4>
+<p>特点：简单。</p>
+<p>问题：1、内存容量有限。2、处理能力有限。3、无法高可用</p>
+<h4>6.2 主从复制</h4>
+<p>Redis的复制(replication)功能允许用户根据一个Redis服务器来创建任意多个该服务器的复制品，其中被复制的服务器为主服务器(master)，而通过复制创建出来的服务器复制品则为从服务器(slave)。只要主从服务器之间的网络连接正常，主从数据库两者会具有相同的数据，主服务器就会一直将自己身上的数据更新同步给从服务器，从而一直保证主从服务器的数据相同。</p>
+<p>特点：</p>
+<ol>
+<li>master/slave 角色。</li>
+<li>master/slave 数据相同。</li>
+<li>降低master读压力，转交从库。</li>
+</ol>
+<p>问题：</p>
+<ol>
+<li>无法保证高可用。</li>
+<li>没有解决master写的压力。</li>
+</ol>
+<h4>6.3 哨兵</h4>
+<p>Redis sentinel是一个分布式系统监控redis主从服务器，并在主服务器下线时自动进行故障转移。其中三个特效：</p>
+<ul>
+<li>监控(Monitoring)：sentinel会不断地检查你的主服务器和从服务器是否运作正常。</li>
+<li>提醒(Notification)：当被监控的某个Redis服务器出现问题时，sentinel可以通过API向管理员或者其他应用程序发送通知。</li>
+<li>自动故障迁移(Automatic failover)：当一个主服务器不能正常工作时，sentinel会开始一次自动故障迁移操作。</li>
+</ul>
+<p>特点：</p>
+<ol>
+<li>保证高可用。</li>
+<li>监控各个节点。</li>
+<li>自动故障迁移。</li>
+</ol>
+<p>缺点：主从模式，切换需要时间丢数据，没有解决master写的压力。</p>
+<h4>6.4 集群(proxy型)</h4>
+<p>Twemproxy是一个Twitter开源的一个redis和memcache快速/轻量级代理服务器，Twemproxy是一个快速的单线程代理程序，支持Memcached ASCII协议和redis协议。</p>
+<p>特点：</p>
+<ol>
+<li>多种hash算法：MD5、CRC16、CRC32、CRC32a、hsieh、murmur、Jenkins。</li>
+<li>支持失败节点自动删除。</li>
+<li>后端Sharding分配逻辑对业务透明，业务方的读写方式和操作单个Redis一致。</li>
+</ol>
+<p>缺点：增加了新的proxy，需要维护其高可用。failover逻辑需要自己实现，其本身不能支持故障的自动转移可扩展性差，进行扩缩容都需要手动干预。</p>
+<h4>6.5 集群(直连型)</h4>
+<p>从redis3.0之后版本支持redis-cluster集群，redis-cluster采用无中心结构，每个节点保存数据和整个集群状态，每个节点都和其它所有节点连接。</p>
+<p>特点：</p>
+<ol>
+<li>无中心架构(不存在哪个节点影响性能瓶颈)，少了proxy层。</li>
+<li>数据按照slot存储分布在多个节点，节点间数据共享，可动态调整数据分布。</li>
+<li>可扩展性，可线性扩展到1000个节点，节点可动态添加或删除。</li>
+<li>高可用性，部分节点不可用时，集群仍可用。通过增加Slave做备份数据副本。</li>
+<li>实现故障自动failover，节点之间通过gossip协议交换状态信息，用投票机制完成Slave到Master的角色提示。</li>
+</ol>
+<p>缺点：</p>
+<ol>
+<li>资源隔离性较差，容易出现相互影响的情况。</li>
+<li>数据通过异步复制，不保证数据的强一致性。</li>
+</ol>
+<p><a href="https://www.cnblogs.com/lpfuture/p/5796398.html" target="_blank" rel="noopener">一致性哈希算法</a></p>
+<p>添加节点：</p>
+<p>集群创建成功后可以向集群中添加节点，如添加7007节点，执行命令：./redis-trib.rb add-node 127.0.01:7007</p>
+<h3>七、Redis大key问题</h3>
+<h4>7.1 什么是Redis大key</h4>
+<ol>
+<li>单个key存储的value很大。</li>
+<li>hash、set、zset、list结构中存储过多的元素。</li>
+</ol>
+<h4>7.2 可能存在Redis大key的业务场景</h4>
+<ol>
+<li>配送范围特别大的门店。</li>
+<li>促销活动特别多的门店、商家等。</li>
+<li>高频用户下的订单列表。</li>
+</ol>
+<h4>7.3 Redis大key的危害</h4>
+<p>OPS低也会导致内存占用多、流量大。比如一次取走100K的数据，当OPS为1000时，就会产生100M/s的流量。如果为list、hash等数据结构，大量的elements需要多次遍历，多次系统调用拷贝数据消耗时间。主动删除、被动过期删除、数据迁移等，由于处理这一个key时间长，导致服务器发送阻塞。</p>
+<h4>7.4 如何找出Redis大key</h4>
+<p>redis可使用redis-cli的&ldquo;--bigkeys&rdquo;选项查找大key。</p>
+<p>jimdb管理端，拓扑Tab页，点击实例可以使用Redis大key扫描功能，该功能底层使用scan扫描所有key，会影响实例性能，选择在业务低峰进行。</p>
+<h4>7.5 如何解决Redis大key问题</h4>
+<p>对于需要整取value的大key，可以尝试将对象分拆成几个key-value，使用multiGet获取值，这样分拆的意义在于分拆单次操作的压力，将操作压力平铺到多个实例中，降低对单个实例的IO影响。</p>
+<p>对于每次需要取部分value的大key，同样可以拆成几个key-value，也可以将这些存储在一个hash中，每个field代表具体属性，使用hget、hmget来获取部分value，使用hset、hmset来更新部分属性。</p>
+<p>对于value中存储过多元素的key，同样可以将这部分元素拆分。</p>
+<p>示例：可以固定一个桶数量，比如1W，每次存取的时候，先在本地计算field的hash值，对1W取模，确定field落在哪个key上。</p>
+<pre class="language-java"><code>newHashKey = hashKey + (hash(field) % 10000);
+hset(newHashKey, field, value);
+hget(newHashKey, field);</code></pre>
+<p><a href="https://www.cnblogs.com/xgqfrms/p/13601959.html" target="_blank" rel="noopener">参考文章</a></p>
 <p>&nbsp;</p>
     </div>
 </template>
