@@ -11,6 +11,7 @@
 <li>PROPAGATION_NEVER(强制非事务)：不支持当前事务。以非事务方式执行，如果当前存在事务，则抛出异常。</li>
 <li>PROPAGATION_NESTED(嵌套事务)：如果一个活动的事务存在，则运行在一个嵌套的事务中。如果没有活动事务，则按REQUIRED属性执行。它使用了一个单独的事务，这个事务拥有多个可以回滚的保存点。内部事务的回滚不会对外部事务造成影响。它只对DataSourceTransactionManager事务管理器起效。</li>
 </ul>
+<p>二、</p>
     </div>
 </template>
 
