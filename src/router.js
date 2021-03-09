@@ -42,6 +42,10 @@ const menuRouters = [
                 meta: { title: '锁机制', },
             },
             {
+                path: 'spring', name: 'spring', component: (resolve) => require(['./views/page/spring.vue'], resolve),
+                meta: { title: 'Spring', },
+            },
+            {
                 path: 'mq', name: 'mq', component: (resolve) => require(['./views/page/mq.vue'], resolve),
                 meta: { title: '消息中间件', },
             },
