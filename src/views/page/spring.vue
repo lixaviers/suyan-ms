@@ -54,6 +54,8 @@
 </tr>
 </tbody>
 </table>
+<p>隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大。大多是数据库默认的隔离级别为Read-Committed，比如SqlServer、Oracle。少数数据库默认隔离级别为：Repeatable-Read，比如MySQL InnoDB。</p>
+<p><a href="https://lixaviers.github.io/suyan-ms/#/mysql" target="_blank" rel="noopener">数据库事务移步MySQL第七条</a></p>
 <p>二、</p>
     </div>
 </template>
