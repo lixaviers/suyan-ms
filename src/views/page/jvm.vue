@@ -266,6 +266,7 @@
 <li>由Eden区、From Space区向To Space区复制时，对象大小大于To Space可用内存，则把该对象转存到老年代，且老年代可用内存不足(老年代可用内存小于该对象)。</li>
 </ul>
 <p>&nbsp;</p>
+<p>&nbsp;</p>
     </div>
 </template>
 
