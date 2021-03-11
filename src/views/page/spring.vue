@@ -56,7 +56,27 @@
 </table>
 <p>隔离级别越高，越能保证数据的完整性和一致性，但是对并发性能的影响也越大。大多是数据库默认的隔离级别为Read-Committed，比如SqlServer、Oracle。少数数据库默认隔离级别为：Repeatable-Read，比如MySQL InnoDB。</p>
 <p><a href="https://lixaviers.github.io/suyan-ms/#/mysql" target="_blank" rel="noopener">数据库事务移步MySQL第七条</a></p>
-<p>二、</p>
+<h4>1.4 Spring中的隔离级别</h4>
+<ul>
+<li>ISOLATION_DEFAULT：PlatfromTransactionManager默认的隔离级别，使用数据库默认的事务隔离级别。另外四个与JDBC的隔离级别相对应。</li>
+<li>ISOLATION_READ_UNCOMMITTED：这是事务最低的隔离级别，它允许另外一个事务可以看到这个事务未提交的数据。这种隔离级别会产生脏读，不可重复读和幻读。</li>
+<li>ISOLATION_READ_COMMITTED：保证一个事务修改的数据提交后才能被另外一个事务读取。另外一个事务不能读取该事务未提交的数据。</li>
+<li>ISOLATION_REPEATABLE_READ：这种事务隔离级别可以防止脏读，不可重复读。但是可能出现幻读。</li>
+<li>ISOLATION_SERIALIZABLE：这是花费最高代价但是最可靠的事务隔离级别。事务被处理为顺序执行。</li>
+</ul>
+<h3>二、Bean的生命周期</h3>
+<p>待完善</p>
+<h3>三、用到的设计模式</h3>
+<ul>
+<li>工厂模式：BeanFactory用来创建对象的实例。</li>
+<li>单例模式：在Spring配置文件中定义的bean默认为单例模式。</li>
+<li>代理模式：在AOP和remoting中被用的比较多。</li>
+<li>模板方法：用来解决代码重复的问题。如：RestTemplate、JmsTemplate、JpaTemplate。</li>
+<li>适配器：Spring AOP。</li>
+<li>装饰器：Spring data hashmapper。</li>
+<li>观察者：spring时间驱动模型。</li>
+</ul>
+<p>&nbsp;</p>
     </div>
 </template>
 
