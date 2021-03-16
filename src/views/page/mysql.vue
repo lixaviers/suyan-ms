@@ -253,7 +253,7 @@
 <pre class="language-java"><code>set global slave_parallel_workers=10;</code></pre>
 <h4>10.4 联级复制</h4>
 <p>A -&gt; B -&gt; C，B中添加参数：log_slave_updates，B将把A的binlog记录到自己的binlog日志中。</p>
-<p>&nbsp;</p>
+<p><a href="https://blog.csdn.net/darkangel1228/article/details/80003967" target="_blank" rel="noopener">参考文章</a></p>
 <p>&nbsp;</p>
     </div>
 </template>
