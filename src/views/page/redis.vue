@@ -168,8 +168,34 @@ hget(newHashKey, field);</code></pre>
 <li>需要另外维护一个集合来存放缓存的key。</li>
 <li>布隆过滤器不支持删值操作。</li>
 </ol>
+<p><a href="https://www.cnblogs.com/rinack/p/9712477.html" target="_blank" rel="noopener">参考文章</a></p>
 <h3>九、缓存雪崩</h3>
-<p>&nbsp;</p>
+<p>缓存雪崩是指在我们设置缓存时采用了相同的过期时间，导致缓存在某一时刻同时失效，请求全部发到DB，DB瞬间压力过重雪崩。</p>
+<p>解决方案：缓存失效时的雪崩效应对底层系统的冲击非常可怕，大多数系统设计者考虑加锁或者队列的方式保证缓存的单线程(进程)写，从而避免失效时大量的并发请求落到底层存储系统上。简单方案：在原有的失效时间基础上增加一个随机值，比如1-5分钟，这样每个缓存的过期时间重复率就会降低，就很难引发集体失效的事件。</p>
+<h3>十、缓存击穿</h3>
+<p>与缓存雪崩的区别在于这里针对某一个key缓存，雪崩则是很多key。缓存在某个时间点过期的时候，恰好在这个时间点对这个key有大量的并发请求过来，这些请求发现缓存过期一般都会从后端DB加载数据并回设到缓存，这个时候大并发的请求可能会瞬间把后端DB压垮。</p>
+<p>解决方案：</p>
+<h4>10.1 使用互斥锁(mutex key)</h4>
+<p>业界比较常用的做法是使用mutex。简单地来说，就是在缓存失效的时候(判断拿出来的值为空)，不是立即去load db，而是先使用缓存工具的某些带成功操作返回值的操作(Redis的SETNX)去set一个mutex key，当操作返回成功时，在进行load db的操作并回设缓存；否则就重试整个get缓存的方法。</p>
+<p>SETNX，就是[SET if not exists]的缩写，也就是只有不存在的时候才设置，可以利用它来实现锁的效果。</p>
+<pre class="language-java"><code>public String get(String key) {
+    String value = redis.get(key);
+    if (value == null) { //代表缓存值过期
+        //设置3min的超时，防止del操作失败的时候，下次缓存过期一直不能load db
+        if (redis.setnx(key_mutex, 1, 3 * 60) == 1) {  //代表设置成功
+            value = db.get(key);
+            redis.set(key, value, expire_secs);
+            redis.del(key_mutex);
+        } else {  //这个时候代表同时候的其他线程已经load db并回设到缓存了，这时候重试获取缓存值即可
+            sleep(50);
+            get(key);  //重试
+        }
+    } else {
+        return value;
+    }
+}</code></pre>
+<h4>10.2 &ldquo;提前&rdquo;使用互斥锁(mutex key)</h4>
+<p>在value内部设置一个超时值(timeout1)，比实际timeout小。当从cache读取到timeout发现它已经过期，马上延长timeout1并重新设置到cache，再从数据库加载数据并设置到cache中。</p>
 <p>&nbsp;</p>
     </div>
 </template>
