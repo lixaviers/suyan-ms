@@ -61,6 +61,10 @@ const menuRouters = [
                 path: 'redis', name: 'redis', component: (resolve) => require(['./views/page/redis.vue'], resolve),
                 meta: { title: 'Redis', },
             },
+            {
+                path: 'distributed', name: 'distributed', component: (resolve) => require(['./views/page/distributed.vue'], resolve),
+                meta: { title: '分布式', },
+            },
         ]
     }
 ];
