@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>线程<el-button class="suyan__btn__print" type="primary" plain @click="closeAside">关闭导航</el-button></h1><el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>线程<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__print" type="primary" plain @click="closeAside">关闭导航</el-button></h1><el-divider></el-divider>
         <h3>一、线程的生命周期(状态)</h3>
 <ol>
 <li>新建(new Thread)：当创建一个Thread类的一个实例时，此线程进入新建状态(未被启动)。</li>
