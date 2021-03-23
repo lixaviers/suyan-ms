@@ -133,9 +133,41 @@ BlockingQueue&lt;Runnable&gt; workQueue, ThreadFactory threadFactory, RejectedEx
 <p>ThreadLocal，很多地方叫做线程本地变量，也有些地方叫做线程本地存储。ThreadLocal为变量在每个线程中都创建了一个副本，那么每个线程可以访问自己内部的副本变量。在每个线程Thread内部有一个ThreadLocal，ThreadLocalMap类型的成员变量threadLocals，就是用来存储实际的变量副本的，键值为当前ThreadLocal变量，value为变量副本(即T类型的变量)。<br />初始化时，在Thread里面，threadLocals为空，当通过ThreadLocal变量调用get()或者set()，就会对Thread类中的threadLocals进行初始化，并且以当前ThreadLocal变量为键值，以ThreadLocal要保存的副本变量为value，存到threadLocals。</p>
 <h4>4.2 应用场景</h4>
 <p>用来解决数据库连接、session管理等。</p>
-<h4>4.3 内存泄漏问题</h4>
+<h4>4.3 实现原理</h4>
+<p>ThreadLocal是一个泛型类，保证可以接受任何类型的对象。因为一个线程内可以存在多个ThreadLocal对象，所以其实是ThreadLocal内部维护了一个Map，这个Map不是直接使用的HashMap，而是TreadLocal实现的一个叫做ThreadLocalMap的静态内部类。而我们使用的get()、set()其实都是调用了这个ThreadLocalMap类对应的get()、set()。如下：</p>
+<pre class="language-java"><code>public void set(T value) {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null) {
+        map.set(this, value);
+    } else {
+        createMap(t, value);
+    }
+}</code></pre>
+<pre class="language-java"><code>public T get() {
+    Thread t = Thread.currentThread();
+    ThreadLocalMap map = getMap(t);
+    if (map != null)
+        return (T)map.get(this);
+
+    // Maps are constructed lazily.  if the map for this thread   
+    // doesn't exist, create it, with this ThreadLocal and its   
+    // initial value as its only entry.   
+    T value = initialValue();
+    createMap(t, value);
+    return value;
+}</code></pre>
+<pre class="language-java"><code>void createMap(Thread t, T firstValue) {
+    t.threadLocals = new ThreadLocalMap(this, firstValue);
+}</code></pre>
+<p>ThreadLocalMap是个静态的内部类：</p>
+<pre class="language-java"><code>static class ThreadLocalMap {   
+    ........
+}</code></pre>
+<p>最终的变量时放在当前线程的ThreadLocalMap中，并不是存在ThreadLocal上，ThreadLocal可以理解为只是ThreadLocalMap的封装，传递了变量值。</p>
+<h4>4.4 内存泄漏问题</h4>
 <p>每个thread中都存在一个map，map的类型是ThreadLocal。ThreadLocalMap. Map中的key为一个threadlocal实例，这个Map的确使用了弱引用，不过弱引用只是针对key。每个key都弱引用指向threadlocal。当把threadlocal实例置为null以后，没有任何强引用指向threadlocal实例，所以threadlocal将会被gc回收。但是，我们的value却不能回收，因为存在一条从current thread连接过来的强引用。只有当前thread结束以后，current thread就不会存在栈中，强引用断开，Current Thread，Map，value将全部被GC回收。<br />所以得出一个结论就是只要这个线程对象被gc回收，就不会出现内存泄露，但在threadLocal设为null和线程结束这段时间不会被回收的，就发生了我们认为的内存泄露。其实这是一个对概念理解的不一致，也没什么好争论的。最要命的是线程对象不被回收的情况，这就发生了真正意义上的内存泄露。比如使用线程池的时候，线程结束是不会销毁的，会再次使用的。就可能出现内存泄露。<br />PS：Java为了最小化减少内存泄露的可能性和影响，在ThreadLocal的get，set的时候都会清除线程Map里所有key为null的value。所以最怕的情况就是，threadLocal对象设null了，开始发生&ldquo;内存泄露&rdquo;，然后使用线程池，这个线程结束，线程放回线程池中不销毁，这个线程一直不被使用，或者分配使用了又不再调用get、set方法，那么这个期间就会发生真正的内存泄露。</p>
-<p><a href="https://www.cnblogs.com/luxiaoxun/p/8744826.html" target="_blank" rel="noopener">参考文章</a>&nbsp; <span style="color: #e03e2d;">此处待完善TODO</span></p>
+<p><a href="https://www.cnblogs.com/luxiaoxun/p/8744826.html" target="_blank" rel="noopener">参考文章</a></p>
     </div>
 </template>
 
