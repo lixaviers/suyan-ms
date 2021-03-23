@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>MySQL<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>MySQL<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__close" plain @click="closeAside"style="margin-right: 20px;">关闭导航</el-button></h1><el-divider></el-divider>
         <h3>一、常见的查询算法</h3>
 <p>1、顺序查找(Linear search)：最基本的查询算法当然是顺序查找，也就是对比每个元素的方法，不过这种算法在数据量很大时效率是极低的。</p>
 <p>2、二分查找(binary search)：比顺序查找更快的查询方法应该就是二分查找了，二分查找的原理是查找过程从数据的中间元素开始，如果中间元素正好是要查找的元素，则搜索过程结束；如果某一特定元素大于或者小于中间元素，则在数据大于或小于中间元素的那一半中查找，而且跟开始一样从中间开始比较。如果在某一步骤数据为空，则代表找不到。</p>
@@ -264,6 +264,9 @@ export default {
     methods: {
         print() {
             Util.print();
+        },
+        closeAside() {
+            Util.closeAside();
         }
     }
 }

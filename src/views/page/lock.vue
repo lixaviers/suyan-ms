@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>锁机制<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>锁机制<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__close" plain @click="closeAside"style="margin-right: 20px;">关闭导航</el-button></h1><el-divider></el-divider>
         <h3>一、说说线程安全问题</h3>
 <p>线程安全是指要控制多个线程对某个资源的有序访问或修改，而在这些线程之间没有产生冲突。在Java里，线程安全一般体现在两个方面：</p>
 <ol>
@@ -106,6 +106,9 @@ export default {
     methods: {
         print() {
             Util.print();
+        },
+        closeAside() {
+            Util.closeAside();
         }
     }
 }

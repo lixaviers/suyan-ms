@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>Spring<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>Spring<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__close" plain @click="closeAside"style="margin-right: 20px;">关闭导航</el-button></h1><el-divider></el-divider>
         <h3>一、Spring事务原理</h3>
 <h4>1.1 事务的基本原理</h4>
 <p>Spring事务的本质其实就是数据库对事务的支持，没有数据库的事务支持，Spring是无法提供事务功能的。对于纯JDBC操作数据库，想要用到事务，可以按照以下步骤进行：</p>
@@ -86,6 +86,9 @@ export default {
     methods: {
         print() {
             Util.print();
+        },
+        closeAside() {
+            Util.closeAside();
         }
     }
 }

@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>消息中间件<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>消息中间件<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__close" plain @click="closeAside"style="margin-right: 20px;">关闭导航</el-button></h1><el-divider></el-divider>
         <h3>一、为什么要使用MQ？</h3>
 <table style="border-collapse: collapse; width: auto;" border="1">
 <tbody>
@@ -160,6 +160,9 @@ export default {
     methods: {
         print() {
             Util.print();
+        },
+        closeAside() {
+            Util.closeAside();
         }
     }
 }

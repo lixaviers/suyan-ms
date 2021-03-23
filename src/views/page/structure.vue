@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>数据结构<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>数据结构<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__close" plain @click="closeAside"style="margin-right: 20px;">关闭导航</el-button></h1><el-divider></el-divider>
         <h3>一、二叉树(Binary Tree)</h3>
 <h4>1.1 定义</h4>
 <p>二叉树(binary tree)是有限节点集合构成的结构，其结构的递归定义为：</p>
@@ -106,6 +106,9 @@ export default {
     methods: {
         print() {
             Util.print();
+        },
+        closeAside() {
+            Util.closeAside();
         }
     }
 }

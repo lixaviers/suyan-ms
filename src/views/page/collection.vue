@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>集合框架<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>集合框架<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__close" plain @click="closeAside"style="margin-right: 20px;">关闭导航</el-button></h1><el-divider></el-divider>
         <h3>一、ArrayList</h3>
 <p>ArrayList相当于一个对象数组，相对于数组来说，数组效率更高，因为数组是连续的存储数据，索引速度非常的快，数组的大小需要提前固定。ArrayList存储的是Object，相当于一个动态的Object []，在插入两种类型的数据时是不会报错的。但是在使用中，很可能会报类型不匹配的错误，所以ArrayList不是类型安全的，ArrayList因为存储的是Object，所以就涉及了装箱和拆箱的问题，在效率上相对数组来说变低了。jdk1.5之后加入了泛型的概念，让ArrayList在使用的时候更加安全了，同时ArrayList大小可以动态的增加，比数组使用起来更加灵活。</p>
 <h3>二、LinkedList</h3>
@@ -95,6 +95,9 @@ export default {
     methods: {
         print() {
             Util.print();
+        },
+        closeAside() {
+            Util.closeAside();
         }
     }
 }

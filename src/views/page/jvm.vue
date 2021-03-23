@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>JVM<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>JVM<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__close" plain @click="closeAside"style="margin-right: 20px;">关闭导航</el-button></h1><el-divider></el-divider>
         <h3><span style="font-size: 14pt;">一、内存区域</span></h3>
 <h4>1.1 JVM规范《The Java Virtual Machine Specificati1on, Java SE 8 Edition》2.5 Run-Time Data Areas中描述的运行时数据区分为6个区域</h4>
 <ul>
@@ -276,6 +276,9 @@ export default {
     methods: {
         print() {
             Util.print();
+        },
+        closeAside() {
+            Util.closeAside();
         }
     }
 }

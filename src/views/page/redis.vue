@@ -1,6 +1,6 @@
 <template>
     <div class="suyan__home">
-        <h1>Redis<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button></h1><el-divider></el-divider>
+        <h1>Redis<el-button class="suyan__btn__print" type="primary" plain @click="print">打印pdf</el-button><el-button class="suyan__btn__close" plain @click="closeAside"style="margin-right: 20px;">关闭导航</el-button></h1><el-divider></el-divider>
         <h3>一、Redis支持数据类型</h3>
 <p>Redis支持五种数据类型：string(字符串)、hash(哈希)、list(列表)、set(集合)、zset(sorted set：有序集合)。</p>
 <ul>
@@ -233,6 +233,9 @@ export default {
     methods: {
         print() {
             Util.print();
+        },
+        closeAside() {
+            Util.closeAside();
         }
     }
 }
