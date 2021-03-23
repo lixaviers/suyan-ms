@@ -13,5 +13,10 @@ util.print = function () {
     window.document.getElementsByClassName('suyan__content__wrapper')[0].style = 'padding-left: 200px';
     window.document.getElementsByClassName('suyan__btn__print')[0].classList.remove('hide');
 };
+util.closeAside = function () {
+    window.document.getElementsByClassName('suyan__aside')[0].classList.add('hide');
+    window.document.getElementsByClassName('suyan__content__wrapper')[0].style = 'padding-left: 0';
+    window.document.getElementsByClassName('suyan__btn__print')[0].classList.add('hide');
+};
 
 export default util;
