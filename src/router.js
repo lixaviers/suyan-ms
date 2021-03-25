@@ -65,6 +65,10 @@ const menuRouters = [
                 path: 'distributed', name: 'distributed', component: (resolve) => require(['./views/page/distributed.vue'], resolve),
                 meta: { title: '分布式', },
             },
+            {
+                path: 'algorithm', name: 'algorithm', component: (resolve) => require(['./views/page/algorithm.vue'], resolve),
+                meta: { title: '算法', },
+            },
         ]
     }
 ];
