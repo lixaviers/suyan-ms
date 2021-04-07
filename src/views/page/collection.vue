@@ -57,7 +57,7 @@
 </ol>
 <h4>3.9 HashMap的参数loadFactor的作用是什么？</h4>
 <p>loadFactor表示HashMap的拥挤程度，影响hash操作到同一个数组位置的概率。默认loadFactor等于0.75，当HashMap里面容纳的元素已经达到HashMap数组长度的75%时，表示HashMap太挤了，需要扩容。在HashMap的构造器中可以定制loadFactor。</p>
-<h4>2.10 HashMap和HashTable的区别</h4>
+<h4>3.10 HashMap和HashTable的区别</h4>
 <p>相同点：都是存储key-value键值对的。</p>
 <p>不同点：</p>
 <ul>
@@ -68,6 +68,8 @@
 <li>添加key-value时的hash值算法不同：HashMap添加元素时，是使用自定义的哈希算法。HashTable没有自定义哈希算法，而直接采用的key的hashCode()。</li>
 <li>迭代器：HashMap的迭代器(Iterator)是fail-fast迭代器，而HashTable的enumerator迭代器不是fail-fast的。所以当有其它线程改变了HashMap的结构(增加或者移除元素)，将会抛出ConcurrentModificationException。</li>
 </ul>
+<h4>3.11 HashMap和LinkedHashMap的区别</h4>
+<p>HashMap可以允许一条为null的键值对，允许多条值为null的键值对，并发不安全，想要并发安全操作可以使用Collections.synchronizedMap()或ConcurrentHashMap来代替。LinkedHashMap是HashMap的一个子类，其特殊实现的仅仅是保存记录的插入顺序，所以在Iterator迭代器遍历LinkedHashMap时先得到的键值对是先插入的(也可以在构造时用参数构造方法来改变顺序来进行排序)，由于其存储沿用了HashMap结构外还多了一个双向顺序链表，所以在一般场景下遍历时会比HashMap慢，此外具备HashMap的所有特性和缺点。</p>
 <h3>四、HashTable</h3>
 <p>待完善</p>
 <h3>五、ConcurrentHashMap</h3>
