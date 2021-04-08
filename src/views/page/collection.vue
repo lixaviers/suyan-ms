@@ -90,6 +90,13 @@
 <li>JDK7：使用的是分离锁(segment)，实际上是一种再入锁(RetrantLock)来保证线程安全。segment的数量是concurrentLevel决定，默认值是16。扩容的时候是针对单个segment扩容的，写操作也是，修改数据的时候锁定的部分，所以比较高效。</li>
 <li>JDK8：segment依然存在，不过不起结构上的作用，只起到保证序列化的兼容性。内部使用volatile来保证数据存储的可见性。利用CAS操作，在特定场景下进行无锁并发操作，内部的锁实现用的是synchronized。在JDK8中，synchronized已经得到性能的优化，并且对比再入锁可以减少内存消耗。在put的过程中如果没有发生冲突，则采用CAS操作进行无锁化更新，只有发生了哈希冲突的时候才锁住，且仅影响发生冲突的那一个链表的更新操作。</li>
 </ul>
+<h3>六、Vector和Stack</h3>
+<h4>6.1 Vector和Stack各有什么特点</h4>
+<p>Vector是线程安全的动态数组，同ArrayList一样继承自AbstractList且实现了List、RandomAccess、Cloneable、Serializable接口，内部实现依然基于数组，Vector与ArrayList基本是一致的，唯一不同的是Vector是线程安全的，会在可能出现线程安全的方法前面加上synchronized关键字，其余ArrayList类似，随机访问速度快，插入和移除性能较差(数组原因)，支持null元素，有顺序，元素可以重复，线程安全。Stack是继承自Vector基于动态数组实现的线程安全栈，不过现在已经不推荐使用了，Stack是并发安全的后进先出，实现了一些栈基本操作的方法(其实并不是只能后进先出，因为继承自Vector，所以可以有很多操作，严格说不是一个栈)。其共同特点都是用了方法锁(即synchronized)来保证并发安全的。</p>
+<h4>6.2 为什么现在都不提倡使用Vector</h4>
+<p>Vector实现并发安全的原理是在每个操作方法上加锁，这些锁并不是必须要的，在实际开发中一般都是通过锁一系列的操作来实现线程安全，也就是说将需要同步的资源放一起加锁来保证线程安全，如果多个Thread并发执行一个已经加锁的方法，但是在该方法中又有Vector的存在，Vector本身实现中已经加锁了，双重锁会造成额外的开销，即Vector同ArrayList一样有fail-fast问题(即无法保证遍历安全)，所以在遍历Vector操作时又得额外加锁保证安全，还不如直接用ArrayList加锁性能好，所以在JDK1.5之后推荐使用java.util.concurrent包下的并发类。此外Vector是一个从JDK1.0就有的古老集合，那时候Java还没提供系统的集合框架，所以在Vector里提供了一些方法名很长的方法(如addElement(Object obj)，实际上这个方法和add(Object obj)没什么区别)，从JDK1.2之后Java提供了集合框架，将Vector改为实现List接口，从而导致Vector里有一些重复的方法。</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <p>&nbsp;</p>
